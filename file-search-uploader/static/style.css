@@ -1,0 +1,26 @@
+/* sade modern görünüm */
+*{box-sizing:border-box}
+body{font-family:Arial,Helvetica,sans-serif;background:#f5f6fa;color:#222;margin:24px}
+.container{max-width:1100px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{margin:0;font-size:20px}
+nav a{color:#2c72d4;text-decoration:none} nav a:hover{text-decoration:underline}
+.card{background:#fff;border:1px solid #e8e9ef;border-radius:12px;padding:16px;box-shadow:0 2px 6px rgba(0,0,0,.05);margin-bottom:14px}
+h2{margin:0 0 10px 0;font-size:16px}
+.muted{color:#666;font-size:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+input[type="text"],select{padding:10px;border:1px solid #d9d9e0;border-radius:10px;outline:none;background:#fff}
+button{padding:10px 14px;border-radius:10px;border:1px solid #2c72d4;background:#2c72d4;color:#fff;cursor:pointer}
+button.secondary{background:#2c72d4}
+button:hover{filter:brightness(1.05)}
+.dropzone{border:2px dashed #d9d9e0;border-radius:12px;padding:18px;text-align:center;background:#fafafe;color:#666}
+.dropzone.drag{border-color:#2c72d4;background:#f0f6ff;color:#2c72d4}
+.center{display:flex;flex-direction:column;gap:10px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{border:1px solid #eee;padding:10px;text-align:left;vertical-align:top}
+th{background:#f5f7fb;color:#444}
+tbody tr:hover{background:#fafcff}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;background:#f0f3ff;color:#2c72d4;border:1px solid #dbe6ff;font-size:12px}
+code{background:#f4f4f7;padding:2px 6px;border-radius:6px}
+mark{background:#fff3bf;padding:0 2px;border-radius:3px}
+footer{margin-top:10px;text-align:center;color:#777;font-size:12px}

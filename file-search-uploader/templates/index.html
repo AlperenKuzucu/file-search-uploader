@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="card">
+  <h2>Dosya Yükle</h2>
+  <form id="upload-form" method="post" action="/upload" enctype="multipart/form-data" class="center">
+    <div id="dropzone" class="dropzone">
+      <strong>Dosyaları buraya sürükleyip bırak</strong><br>
+      <span class="muted">ya da tıkla</span>
+    </div>
+    <!-- dosya tipleri için accept eklendi -->
+    <input id="file-input" type="file" name="files" multiple accept=".docx,.xlsx,.xls,.pdf,.txt" style="display:none" />
+    <button type="submit" class="secondary">Yükle</button>
+  </form>
+  <p class="muted">
+    Desteklenen türler: .docx, .xlsx/.xls, .pdf, .txt <br>
+    (görseller eklenebilir; içerik aramasına dahil olmaz)
+  </p>
+</section>
+
+<section class="card">
+  <h2>İçerikte Ara</h2>
+  <form id="search-form" method="get" action="/search" class="controls">
+    <!-- son girilen terimi input’a geri koymak için -->
+    <input type="text" name="term" placeholder="Aranacak kelime..." value="{{ request.query_params.get('term','') }}" required />
+
+    <!-- Arama modu -->
+    {% set m = request.query_params.get('mode','contains') %}
+    <select name="mode">
+      <option value="contains" {{ 'selected' if m=='contains' else '' }}>İçeren</option>
+      <option value="startswith" {{ 'selected' if m=='startswith' else '' }}>Başlayan</option>
+      <option value="endswith" {{ 'selected' if m=='endswith' else '' }}>Biten</option>
+    </select>
+
+    <!-- Kapsam -->
+    {% set sc = request.query_params.get('scope','both') %}
+    <select name="scope">
+      <option value="both" {{ 'selected' if sc=='both' else '' }}>Ad + İçerik</option>
+      <option value="name" {{ 'selected' if sc=='name' else '' }}>Yalnızca Ad</option>
+      <option value="content" {{ 'selected' if sc=='content' else '' }}>Yalnızca İçerik</option>
+    </select>
+
+    <button type="submit">Ara</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Yüklenen Dosyalar</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Dosya</th>
+        <th>Tür</th>
+        <th>Yazar</th>
+        <th>Oluşturma</th>
+        <th>Sahibi</th>
+        <th>Boyut</th>
+        <th>Yüklendi</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for f in files %}
+      <tr>
+        <td>{{ f["filename"] }}</td>
+        <td>
+          {% if f["filetype"] and f["filetype"] != "unknown" %}
+            <span class="badge">{{ f["filetype"] }}</span>
+          {% endif %}
+        </td>
+        <td>{{ f["author"] or "" }}</td>
+        <td>{{ f["created"]|dt }}</td>
+        <td>{{ f["owner"] or "" }}</td>
+        <td>{{ f["size_bytes"]|human }}</td>
+        <td>{{ f["uploaded_at"]|dt }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- UX: dropzone -->
+<script>
+  (function () {
+    const dz = document.getElementById('dropzone');
+    const fi = document.getElementById('file-input');
+    if (!dz || !fi) return;
+
+    dz.addEventListener('click', () => fi.click());
+    dz.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dz.classList.add('dragover');
+    });
+    dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+    dz.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+      if (e.dataTransfer && e.dataTransfer.files) {
+        fi.files = e.dataTransfer.files;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .dropzone.dragover { outline: 2px dashed #888; background: #fafafa; }
+</style>
+
+{% endblock %}

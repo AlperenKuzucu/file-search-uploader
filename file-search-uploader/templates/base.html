@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or "Dosya Yükleme & İçerik Arama" }}</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📂 Dosya Yükleme & İçerik Arama</h1>
+      <nav><a href="/">Anasayfa</a></nav>
+    </header>
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    <footer><small>Staj – Hafta 2</small></footer>
+  </div>
+  <script src="/static/script.js"></script>
+</body>
+</html>

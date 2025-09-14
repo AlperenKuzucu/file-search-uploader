@@ -1,0 +1,67 @@
+  {% extends "base.html" %}
+  {% block content %}
+
+  <a href="/" class="back">&larr; Geri</a>
+
+  <section class="card">
+    <h2>Arama Sonuçları</h2>
+    <p>
+      <strong>Aranan:</strong> {{ term }}
+      &nbsp; <strong>Mod:</strong> {{ mode }}
+      &nbsp; <strong>Kapsam:</strong> {{ scope }}
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Dosya</th>
+          <th>Tür</th>
+          <th>Yazar</th>
+          <th>Oluşturma</th>
+          <th>Sahibi</th>
+          <th>Boyut</th>
+          <th>Yüklendi</th>
+          <th>İçerik</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if rows and rows|length > 0 %}
+        {% for r in rows %}
+          <tr>
+            <td>{{ r["filename"] }}</td>
+            <td>
+              {% if r["filetype"] and r["filetype"] != "unknown" %}
+                <span class="badge">{{ r["filetype"] }}</span>
+              {% endif %}
+            </td>
+            <td>{{ r["author"] or "" }}</td>
+            <td>{{ r["created"]|dt }}</td>
+            <td>{{ r["owner"] or "" }}</td>
+            <td>{{ r["size_bytes"]|human }}</td>
+            <td>{{ r["uploaded_at"]|dt }}</td>
+            <td>
+              <code>{{ snippet(r["content"] or "", term, mode) | safe }}</code>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="8" style="text-align:center;color:#666">Sonuç bulunamadı.</td>
+        </tr>
+      {% endif %}
+      </tbody>
+    </table>
+  </section>
+
+  <style>
+    td code {
+      display: inline-block;
+      max-width: 560px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    mark { background: #ffee88; padding: 0 .15em; border-radius: 2px; }
+  </style>
+
+  {% endblock %}
